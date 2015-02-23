@@ -56,7 +56,7 @@ public class LinearRegressionOutlierTransformProcessor extends TransformProcesso
     private double ci = 0.95;           // Confidence Interval
     private int range = 1;              // Number of standard deviations for outlier calc
     private Object[] regResult;         // Calculated regression coefficients
-    private Map<Integer, String> paramPositions = new HashMap<Integer, String>(); // Input parameters
+    private Map<Integer, Integer> paramPositions = new HashMap<Integer, Integer>(); // Input parameters
     private final int SIMPLE_LINREG_INPUT_PARAM_COUNT = 2;
     private RegressionCalculator regressionCalculator = null;
 
@@ -90,7 +90,7 @@ public class LinearRegressionOutlierTransformProcessor extends TransformProcesso
                 if (parameters[i] instanceof Variable) {
                     Variable var = (Variable) parameters[i];
                     String attributeName = var.getAttributeName();
-                    paramPositions.put(inStreamDefinition.getAttributePosition(attributeName), attributeName );
+                    paramPositions.put(i-4, inStreamDefinition.getAttributePosition(attributeName));
                     paramCount++;
                 }
             }
@@ -106,7 +106,7 @@ public class LinearRegressionOutlierTransformProcessor extends TransformProcesso
                 if (parameters[i] instanceof Variable) {
                     Variable var = (Variable) parameters[i];
                     String attributeName = var.getAttributeName();
-                    paramPositions.put(inStreamDefinition.getAttributePosition(attributeName), attributeName );
+                    paramPositions.put(i-1, inStreamDefinition.getAttributePosition(attributeName));
                     paramCount++;
                 }
             }
@@ -151,9 +151,9 @@ public class LinearRegressionOutlierTransformProcessor extends TransformProcesso
             outStreamData = null;
         } else {
             // Get the current X value
-            Iterator<Map.Entry<Integer, String>> it = paramPositions.entrySet().iterator();
+            Iterator<Map.Entry<Integer, Integer>> it = paramPositions.entrySet().iterator();
             it.next();
-            double nextX = ((Number) inEvent.getData(it.next().getKey())).doubleValue();
+            double nextX = ((Number) inEvent.getData(it.next().getValue())).doubleValue();
 
             // Calculate the upper limit and the lower limit based on standard error and regression equation
             double forecastY = (Double) regResult[1] + nextX * (Double) regResult[2];

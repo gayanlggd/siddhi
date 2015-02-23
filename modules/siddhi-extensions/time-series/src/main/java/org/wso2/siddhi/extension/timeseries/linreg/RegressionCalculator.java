@@ -24,13 +24,13 @@ public abstract class RegressionCalculator {
         calcInterval = calcInt;
 
     }
-    protected abstract void addEvent(InEvent inEvent, Map<Integer, String> paramPositions, int paramCount);
+    protected abstract void addEvent(InEvent inEvent, Map<Integer, Integer> paramPositions, int paramCount);
 
     protected abstract void removeEvent();
 
     protected abstract Object[] processData();
 
-    public Object[] calculateLinearRegression(InEvent inEvent, Map<Integer, String> paramPositions) {
+    public Object[] calculateLinearRegression(InEvent inEvent, Map<Integer, Integer> paramPositions) {
 
         addEvent(inEvent, paramPositions, xParameterCount+1);
 

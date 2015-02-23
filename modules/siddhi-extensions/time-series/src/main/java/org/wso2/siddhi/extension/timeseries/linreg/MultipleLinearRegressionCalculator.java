@@ -23,7 +23,7 @@ public class MultipleLinearRegressionCalculator extends RegressionCalculator
         super(paramCount, calcInt, limit, ci);
     }
 
-    public void addEvent (InEvent inEvent, Map<Integer, String> paramPositions, int paramCount) {
+    public void addEvent (InEvent inEvent, Map<Integer, Integer> paramPositions, int paramCount) {
 
         incCounter++;
         eventCount++;
@@ -31,11 +31,11 @@ public class MultipleLinearRegressionCalculator extends RegressionCalculator
         double[] dataY = new double[1];
         dataX[0] = 1.0;
 
-        Iterator<Map.Entry<Integer, String>> it = paramPositions.entrySet().iterator();
-        dataY[0] = ((Number) inEvent.getData(it.next().getKey())).doubleValue();
+        Iterator<Map.Entry<Integer, Integer>> it = paramPositions.entrySet().iterator();
+        dataY[0] = ((Number) inEvent.getData(it.next().getValue())).doubleValue();
 
         for(int i=1; i<paramCount; i++) {
-            dataX[i] = ((Number) inEvent.getData(it.next().getKey())).doubleValue();
+            dataX[i] = ((Number) inEvent.getData(it.next().getValue())).doubleValue();
         }
 
         xValueList.add(dataX);

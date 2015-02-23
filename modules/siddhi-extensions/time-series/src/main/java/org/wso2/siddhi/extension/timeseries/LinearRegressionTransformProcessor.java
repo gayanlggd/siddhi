@@ -53,7 +53,7 @@ public class LinearRegressionTransformProcessor extends TransformProcessor
     private double ci = 0.95;                                           // Confidence Interval
     private final int SIMPLE_LINREG_INPUT_PARAM_COUNT = 2;              // Number of Input parameters in a simple linear regression
     private Object [] regResult;                                        // Calculated Regression Coefficients
-    private Map<Integer, String> paramPositions = new HashMap<Integer, String>();   // Input Parameters
+    private Map<Integer, Integer> paramPositions = new HashMap<Integer, Integer>();   // Input Parameters
     private RegressionCalculator regressionCalculator = null;
 
     public LinearRegressionTransformProcessor() {
@@ -85,7 +85,7 @@ public class LinearRegressionTransformProcessor extends TransformProcessor
                 if (parameters[i] instanceof Variable) {
                     Variable var = (Variable) parameters[i];
                     String attributeName = var.getAttributeName();
-                    paramPositions.put(inStreamDefinition.getAttributePosition(attributeName), attributeName );
+                    paramPositions.put(i-3, inStreamDefinition.getAttributePosition(attributeName));
                     paramCount++;
                 }
             }
@@ -95,7 +95,7 @@ public class LinearRegressionTransformProcessor extends TransformProcessor
                 if (parameters[i] instanceof Variable) {
                     Variable var = (Variable) parameters[i];
                     String attributeName = var.getAttributeName();
-                    paramPositions.put(inStreamDefinition.getAttributePosition(attributeName), attributeName );
+                    paramPositions.put(i, inStreamDefinition.getAttributePosition(attributeName));
                     paramCount++;
                 }
             }

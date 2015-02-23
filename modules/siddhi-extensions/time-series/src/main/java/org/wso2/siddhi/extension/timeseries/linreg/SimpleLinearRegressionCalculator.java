@@ -27,16 +27,16 @@ public class SimpleLinearRegressionCalculator extends RegressionCalculator
     }
 
 
-    public void addEvent (InEvent inEvent, Map<Integer, String> paramPositions, int paramCount) {
+    public void addEvent (InEvent inEvent, Map<Integer, Integer> paramPositions, int paramCount) {
 
         eventCount++;
         incCounter++;
 
-        Iterator<Map.Entry<Integer, String>> it = paramPositions.entrySet().iterator();
-        yValue = ((Number) inEvent.getData(it.next().getKey())).doubleValue();
+        Iterator<Map.Entry<Integer, Integer>> it = paramPositions.entrySet().iterator();
+        yValue = ((Number) inEvent.getData(it.next().getValue())).doubleValue();
         yValueList.add(yValue);
 
-        xValue = ((Number) inEvent.getData(it.next().getKey())).doubleValue();
+        xValue = ((Number) inEvent.getData(it.next().getValue())).doubleValue();
         xValueList.add(xValue);
 
         sumX += xValue;

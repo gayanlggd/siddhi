@@ -54,7 +54,7 @@ public class LinearRegressionForecastTransformProcessor extends TransformProcess
     private ExpressionExecutor exp;     // input variable for forecasting
     private double ci = 0.95;           // confidence interval
     private final int SIMPLE_LINREG_INPUT_PARAM_COUNT = 2;
-    private Map<Integer, String> paramPositions = new HashMap<Integer, String>();
+    private Map<Integer, Integer> paramPositions = new HashMap<Integer, Integer>();
     private RegressionCalculator regressionCalculator = null;
     Object [] regResult;
 
@@ -89,7 +89,7 @@ public class LinearRegressionForecastTransformProcessor extends TransformProcess
                 if (parameters[i] instanceof Variable) {
                     Variable var = (Variable) parameters[i];
                     String attributeName = var.getAttributeName();
-                    paramPositions.put(inStreamDefinition.getAttributePosition(attributeName), attributeName );
+                    paramPositions.put(i-4, inStreamDefinition.getAttributePosition(attributeName));
                     paramCount++;
                 }
             }
@@ -102,7 +102,7 @@ public class LinearRegressionForecastTransformProcessor extends TransformProcess
                 if (parameters[i] instanceof Variable) {
                     Variable var = (Variable) parameters[i];
                     String attributeName = var.getAttributeName();
-                    paramPositions.put(inStreamDefinition.getAttributePosition(attributeName), attributeName );
+                    paramPositions.put(i-4, inStreamDefinition.getAttributePosition(attributeName));
                     paramCount++;
                 }
             }

@@ -1,5 +1,4 @@
 package org.wso2.siddhi.test;
-
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,46 +8,34 @@ import org.wso2.siddhi.core.event.Event;
 import org.wso2.siddhi.core.query.output.callback.QueryCallback;
 import org.wso2.siddhi.core.stream.input.InputHandler;
 import org.wso2.siddhi.core.util.EventPrinter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Created by seshika on 4/7/14.
  */
 public class SimpleRegressionTestCase
 {
     static final Logger log = Logger.getLogger(SimpleRegressionTestCase.class);
-
     private int count;
     private double betaZero;
-
     @Before
     public void init() {
         count = 0;
     }
-
     @Test
     public void testRegression() throws InterruptedException {
         log.info("Regression Test 1 - Simple Linear");
-
         SiddhiConfiguration siddhiConfiguration = new SiddhiConfiguration();
-
         List<Class> list = new ArrayList<Class>();
         list.add(org.wso2.siddhi.extension.timeseries.LinearRegressionTransformProcessor.class);
         list.add(org.wso2.siddhi.extension.timeseries.LinearRegressionForecastTransformProcessor.class);
         list.add(org.wso2.siddhi.extension.timeseries.LinearRegressionOutlierTransformProcessor.class);
-
         siddhiConfiguration.setSiddhiExtensions(list);
-
         SiddhiManager siddhiManager = new SiddhiManager(siddhiConfiguration);
-
         InputHandler inputHandler = siddhiManager.defineStream("define stream DataStream ( y double, x double )");
-
-        String queryReference = siddhiManager.addQuery("from DataStream#transform.timeseries:regress( 1, 1000000, 0.95,  y, x) \n" +
-                "        select *  \n" +
-                "        insert into RegressionResult;\n");
-
+        String queryReference = siddhiManager.addQuery("from DataStream#transform.timeseries:regress( 1, 1000000, 0.95, y, x) \n" +
+                " select * \n" +
+                " insert into RegressionResult;\n");
         siddhiManager.addCallback(queryReference, new QueryCallback() {
             @Override
             public void receive(long timeStamp, Event[] inEvents, Event[] removeEvents) {
@@ -59,9 +46,7 @@ public class SimpleRegressionTestCase
                 count++;
             }
         });
-
         System.out.println(System.currentTimeMillis());
-
         inputHandler.send(new Object[]{3300.00,31.00});
         inputHandler.send(new Object[]{2600.00,18.00});
         inputHandler.send(new Object[]{2500.00,17.00});
@@ -112,14 +97,9 @@ public class SimpleRegressionTestCase
         inputHandler.send(new Object[]{250.00,1.00});
         inputHandler.send(new Object[]{200.00,13.00});
         inputHandler.send(new Object[]{180.00,6.00});
-
         Thread.sleep(1000);
         siddhiManager.shutdown();
-
-//        Assert.assertEquals("No of events: ", 50, count);
-//        Assert.assertEquals("Beta0: ", 573.1418421169498, betaZero);
-
+// Assert.assertEquals("No of events: ", 50, count);
+// Assert.assertEquals("Beta0: ", 573.1418421169498, betaZero);
     }
 }
-
-
